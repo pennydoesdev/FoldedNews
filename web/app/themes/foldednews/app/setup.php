@@ -36,6 +36,23 @@ add_filter('block_editor_settings_all', function ($settings) {
 });
 
 /**
+ * Load the Milkdown newsroom editor on the post edit screens that author Markdown.
+ */
+add_action('admin_footer', function () {
+    $screen = function_exists('get_current_screen') ? get_current_screen() : null;
+
+    if (! $screen || $screen->base !== 'post') {
+        return;
+    }
+
+    $types = ['fn_article', 'fn_live_blog', 'fn_live_update', 'fn_timeline_event', 'fn_video', 'fn_podcast', 'fn_newsletter'];
+
+    if (in_array($screen->post_type, $types, true)) {
+        echo Vite::withEntryPoints(['resources/js/milkdown.js'])->toHtml();
+    }
+});
+
+/**
  * Register theme support.
  *
  * @link https://developer.wordpress.org/themes/functionality/

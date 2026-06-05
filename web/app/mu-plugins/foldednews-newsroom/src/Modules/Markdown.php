@@ -56,13 +56,21 @@ final class Markdown implements Module
     {
         wp_nonce_field('fn_markdown_save', 'fn_markdown_nonce');
         $value = get_post_meta($post->ID, self::SOURCE_META, true);
+        $wsUrl = getenv('FN_COLLAB_WS_URL');
 
         echo '<p class="description">'
-            . esc_html__('Author in Markdown. On save it is converted to Gutenberg blocks. Markdown is the canonical source.', 'foldednews')
+            . esc_html__('Author in Markdown (Milkdown). Saved as the canonical source and converted to Gutenberg blocks.', 'foldednews')
             . '</p>';
+
+        // Canonical source: the editor mounts over this; without JS it stays a textarea.
         printf(
-            '<textarea name="fn_markdown_source" rows="18" style="width:100%%;font-family:monospace;" spellcheck="false">%s</textarea>',
+            '<textarea id="fn-markdown-source" name="fn_markdown_source" rows="18" style="width:100%%;font-family:monospace;" spellcheck="false">%s</textarea>',
             esc_textarea(is_string($value) ? $value : '')
+        );
+        printf(
+            '<div data-fn-milkdown data-textarea="fn-markdown-source" data-room="fn-%d" data-collab-ws="%s" class="fn-milkdown" style="min-height:60vh;border:1px solid #dcdcde;border-radius:6px;margin-top:8px;"></div>',
+            $post->ID,
+            esc_attr(is_string($wsUrl) ? $wsUrl : '')
         );
     }
 

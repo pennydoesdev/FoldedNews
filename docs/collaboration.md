@@ -29,7 +29,20 @@ Milkdown 7.21.x (official packages, verified from the repo):
 
 The editor's markdown is written to `_newsroom_markdown_source`; the Stage 4
 `MarkdownToBlocks` pipeline produces the canonical Gutenberg `post_content`.
-Built as a Sage/Vite entry mounted in a Gutenberg sidebar/panel or a desk app.
+
+### Scaffolded in this build
+
+- **Vite entry** `resources/js/milkdown.js` — a Crepe editor (clean frame theme)
+  that mounts over the Stage 4 Markdown textarea, syncs Markdown back to it
+  (so the existing form save → `save_post` → blocks pipeline persists), and
+  enables Yjs collaboration when `FN_COLLAB_WS_URL` is set (else solo). Without
+  JS, the textarea remains as a fallback.
+- **Mount** rendered by the `Markdown` mu-plugin meta box (`[data-fn-milkdown]`,
+  room = `fn-{postID}`); enqueued on the relevant post screens by the theme
+  (`app/setup.php`).
+- **Collaboration server (optional):** run a Yjs WebSocket backend and point
+  `FN_COLLAB_WS_URL` at it — `npx y-websocket` (port 1234) for dev, or a
+  self-hosted **Hocuspocus** server in production. Each post is its own room.
 
 ## Newsroom fit
 
