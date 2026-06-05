@@ -308,6 +308,15 @@ Automated: `tests/Unit/BookmarksTest.php` (pure toggle/merge); PHPStan level 5.
   `window.fnFetch` routes through `wp.desktop.fetch()` (else standard `fetch`).
 - [ ] wp-admin is not replaced; all default screens still work.
 
+## Manual QA — Stage 17 (QA Chrome extension)
+
+- [ ] Load `chrome-extension/` unpacked; set allowed domains in Options.
+- [ ] On a non-configured domain the extension refuses to run.
+- [ ] On a configured article page, Run checks → pass/fail per check; Export JSON
+  downloads the report.
+- [ ] Confirm it collects no reader data and makes no network calls beyond the
+  optional configured health endpoint.
+
 ## Per-stage checklists
 
 Each stage appends its manual QA checklist here as it lands (content model,

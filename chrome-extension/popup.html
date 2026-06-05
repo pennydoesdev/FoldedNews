@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body { font: 13px/1.4 system-ui, sans-serif; width: 320px; margin: 0; padding: 12px; }
+      h1 { font-size: 14px; margin: 0 0 8px; }
+      button { font: inherit; padding: 6px 10px; cursor: pointer; }
+      .row { display: flex; gap: 8px; margin-bottom: 8px; }
+      ul { list-style: none; padding: 0; margin: 8px 0; max-height: 360px; overflow: auto; }
+      li { display: flex; justify-content: space-between; gap: 8px; padding: 3px 0; border-bottom: 1px solid #eee; }
+      .pass { color: #137333; } .fail { color: #c5221f; } .warn { color: #b06000; }
+      .muted { color: #777; }
+      a { color: #1a73e8; }
+    </style>
+  </head>
+  <body>
+    <h1>FoldedNews QA</h1>
+    <p id="status" class="muted">Checking domain…</p>
+    <div class="row">
+      <button id="run" disabled>Run checks</button>
+      <button id="export" disabled>Export JSON</button>
+      <a href="#" id="options">Options</a>
+    </div>
+    <ul id="results"></ul>
+    <script src="popup.js"></script>
+  </body>
+</html>
