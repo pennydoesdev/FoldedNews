@@ -197,3 +197,47 @@ function video_is_live(WP_Post|int $post): bool
 {
     return (bool) get_post_meta(id($post), '_fn_live', true);
 }
+
+/* ---- Podcast (Stage 9) ---------------------------------------------------- */
+
+function podcast_audio(WP_Post|int $post): string
+{
+    $value = get_post_meta(id($post), '_fn_audio', true);
+
+    return is_string($value) ? $value : '';
+}
+
+function podcast_duration(WP_Post|int $post): string
+{
+    $value = get_post_meta(id($post), '_fn_duration', true);
+
+    return is_string($value) ? $value : '';
+}
+
+function podcast_is_premium(WP_Post|int $post): bool
+{
+    return (bool) get_post_meta(id($post), '_fn_premium', true);
+}
+
+function show_meta(int $termId, string $key): string
+{
+    $value = get_term_meta($termId, '_fn_'.$key, true);
+
+    return is_string($value) ? $value : '';
+}
+
+/**
+ * @return list<array{label: string, url: string}>
+ */
+function show_subscribe_links(int $termId): array
+{
+    $links = [];
+    foreach (['apple' => 'Apple Podcasts', 'spotify' => 'Spotify', 'youtube' => 'YouTube'] as $service => $label) {
+        $url = show_meta($termId, $service);
+        if ($url !== '') {
+            $links[] = ['label' => $label, 'url' => $url];
+        }
+    }
+
+    return $links;
+}

@@ -164,6 +164,23 @@ captions `lang|label|url`, live flag); assign Shows/Topics.
 Automated: `tests/Unit/VideoTest.php`; PHPStan level 5 covers the module;
 `npm run build` verifies the lazy-loaded player bundle.
 
+## Manual QA — Stage 9 (Podcast hub)
+
+- [ ] Create a Show (a `podcast_show` term). Internal mode: add an episode
+  (`fn_podcast`) with an audio URL (S3/CDN) → it appears on the show page and hub.
+- [ ] Generated feed: visit `/feed/podcast?podcast_show={slug}` → valid podcast
+  RSS with `<enclosure>` (CDN audio) and `<itunes:duration>` (validate at
+  https://podba.se/validate/ or castfeedvalidator.com).
+- [ ] External mode: set a Show's mode to `external_rss` + an **RSS.com** feed URL;
+  trigger sync (`wp acorn` cron or `do_action('fn_podcast_sync')`) → episodes
+  import, preserving the external GUID.
+- [ ] Re-run sync → **no duplicates** (GUID dedup).
+- [ ] Hub: hero, show grid, category filters, latest episodes; episode page has
+  audio player, show notes, transcript; show page has subscribe + RSS links.
+- [ ] Enclosure/audio URLs are CDN, not local uploads.
+
+Automated: `tests/Unit/PodcastTest.php`; PHPStan level 5 covers Importer/Feed/module.
+
 ## Per-stage checklists
 
 Each stage appends its manual QA checklist here as it lands (content model,

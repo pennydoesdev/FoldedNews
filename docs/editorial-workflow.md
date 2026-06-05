@@ -67,3 +67,13 @@ JSON-LD (with `liveBlogUpdate` entries) is emitted by the Schema module.
 Timelines (`fn_timeline_event`, `_fn_event_date`/`_fn_source`) render via the
 `timeline` component grouped by year, vertical (mobile-first) or horizontal,
 on the timeline archive (`TimelineArchive` composer).
+
+## Podcasts (Stage 9 — implemented)
+
+Shows are a `podcast_show` taxonomy (term meta: mode, import feed URL, artwork,
+Apple/Spotify/YouTube links); episodes are `fn_podcast` (`_fn_audio`, `_fn_guid`,
+`_fn_duration`, `_fn_premium`, transcript, chapters). **Internal** mode generates
+an iTunes RSS feed at `/feed/podcast?podcast_show={slug}` (CDN enclosures).
+**External RSS** mode (RSS.com and any podcast feed) imports via core SimpleXML,
+dedupes by GUID, and syncs hourly (`fn_podcast_sync`); `rss_com_api` mode falls
+back to the public feed when no API credentials are set.

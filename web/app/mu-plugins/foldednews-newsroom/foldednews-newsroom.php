@@ -53,6 +53,7 @@ function modules(): array
         Modules\Media::class,
         Modules\LiveBlog::class,
         Modules\Video::class,
+        Modules\Podcast::class,
         Modules\Schema::class,
     ]);
 }
