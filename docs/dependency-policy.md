@@ -29,6 +29,29 @@
 - Security advisories: `composer audit` + `npm audit` run in CI.
 - Major upgrades land on a branch with the full CI matrix green before merge.
 
+## WordPress plugins via Composer
+
+WP Packages is registered in the root `composer.json`, so WordPress.org plugins
+install via the `wp-plugin/` namespace (themes via `wp-theme/`):
+
+```bash
+composer require wp-plugin/akismet
+composer require roots/wordpress:7.0 -W   # update WP core
+```
+
+`plugins/` and `mu-plugins/*/` are git-ignored (Composer manages them). Anything
+authored by hand is committed via an explicit negation — e.g. our newsroom
+mu-plugin: `!web/app/mu-plugins/foldednews-newsroom/`. To force a regular plugin
+to load as a mu-plugin, add it to the `mu-plugins` `installer-paths` array.
+
+## Bedrock plugin compatibility
+
+A plugin that works on vanilla WordPress but not Bedrock is usually hard-coding
+`wp-content`, assuming WP isn't in a subdirectory, or including `wp-load.php`.
+A `"Sorry, you are not allowed to access this page."` error on a non-dev
+environment typically means the plugin conflicts with `DISALLOW_FILE_MODS`
+(set in `config/application.php`; relaxed in development).
+
 ## Removal
 
 Remove the requirement from the manifest, regenerate the lockfile, delete any

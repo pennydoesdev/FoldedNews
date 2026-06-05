@@ -27,6 +27,7 @@ Application::configure()
     ->withProviders([
         ThemeServiceProvider::class,
     ])
+    ->withRouting(web: base_path('routes/web.php'))
     ->boot();
 
 /*

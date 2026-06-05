@@ -112,6 +112,30 @@ scripts/health-check.sh https://foldednews.example.com
 Verifies homepage `200` and warns if any public `wp-content/uploads/` URL is
 present (Stage 5 requires CDN-rewritten media).
 
+## Production environment flag
+
+`WP_ENV=production` **must** be set in production. Otherwise Bedrock's
+`roots/bedrock-disallow-indexing` mu-plugin keeps the site `noindex`. On deploy
+also run Acorn caches: `wp acorn optimize` (+ `route:cache`, `view:cache`).
+WP-Cron should be replaced by a system cron (`DISABLE_WP_CRON=true` + a scheduled
+`wp cron event run --due-now`), as Trellis does by default.
+
+## Trellis (recommended)
+
+[Trellis](https://roots.io/trellis/) provisions the Roots runtime (Ubuntu +
+**Nginx + PHP-FPM** + MariaDB + SSL) and does zero-downtime **atomic** deploys
+with the same release-symlink/rollback model as our `scripts/`:
+
+```bash
+trellis deploy production     # composer install runs in the deploy_build_after hook
+trellis rollback production   # repoints the previous release
+trellis logs --error production
+```
+
+Secrets live in encrypted Ansible **Vault** files (`group_vars/<env>/vault.yml`)
+— never plaintext in git, matching `docs/environment-variables.md`. Our
+`scripts/deploy.sh` mirrors this model for non-Trellis hosts.
+
 ## CI
 
 `.github/workflows/ci.yml` runs PHP lint/analyse/test, the Vite build, secret +

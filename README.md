@@ -56,5 +56,5 @@ Manual QA for this stage: `docs/testing.md`. Deployment: `docs/deployment.md`.
 ## Documentation
 
 `docs/vendor-references.md`, `dependency-policy.md`, `environment-variables.md`,
-`deployment.md`, `testing.md`, `webhooks.md`, `media-offload.md`,
+`deployment.md`, `testing.md`, `acorn.md`, `webhooks.md`, `media-offload.md`,
 `ai-providers.md`, `advertising.md`, `editorial-workflow.md`.
