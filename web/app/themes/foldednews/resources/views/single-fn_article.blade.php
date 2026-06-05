@@ -23,6 +23,7 @@
           <x-author-card :person="$person" />
         @endforeach
         <x-article-date-line :post="$id" />
+        <x-bookmark-button :post="$id" class="ml-auto" />
       </div>
 
       @if (has_post_thumbnail())

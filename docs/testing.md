@@ -287,6 +287,18 @@ Set one or more provider env keys (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, …).
 Automated: `tests/Unit/AiCostTest.php` (pure cost math); PHPStan level 5 covers
 the AI layer.
 
+## Manual QA — Stage 15 (Bookmarks)
+
+- [ ] Logged in: click Save on an article → it persists (REST), and shows under
+  Account → Saved articles. Click again to remove (item disappears).
+- [ ] Saved articles: search filters by title; sort toggles recently-saved vs
+  recently-published.
+- [ ] Logged out: Save uses localStorage (no refresh); persists across reloads.
+- [ ] Log in with guest bookmarks present → they merge into the account, local
+  storage is cleared, and existing saved timestamps are preserved.
+
+Automated: `tests/Unit/BookmarksTest.php` (pure toggle/merge); PHPStan level 5.
+
 ## Per-stage checklists
 
 Each stage appends its manual QA checklist here as it lands (content model,

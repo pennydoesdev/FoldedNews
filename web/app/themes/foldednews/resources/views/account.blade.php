@@ -28,8 +28,36 @@
     </section>
 
     <section class="mt-6 rounded border border-neutral-200 p-4">
+      <h2 class="font-display text-xl font-bold">{{ __('Saved articles', 'foldednews') }}</h2>
+
+      @if (empty($bookmarks))
+        <p class="mt-1 text-sm text-ink-500">{{ __('No saved articles yet.', 'foldednews') }}</p>
+      @else
+        <div class="mt-3 flex flex-wrap gap-3">
+          <label class="sr-only" for="saved-search">{{ __('Search saved', 'foldednews') }}</label>
+          <input id="saved-search" type="search" data-fn-saved-search placeholder="{{ __('Search saved…', 'foldednews') }}" class="flex-1 rounded border border-neutral-300 px-3 py-1.5 text-sm">
+          <label class="sr-only" for="saved-sort">{{ __('Sort', 'foldednews') }}</label>
+          <select id="saved-sort" data-fn-saved-sort class="rounded border border-neutral-300 px-2 py-1.5 text-sm">
+            <option value="saved">{{ __('Recently saved', 'foldednews') }}</option>
+            <option value="published">{{ __('Recently published', 'foldednews') }}</option>
+          </select>
+        </div>
+
+        <ul class="mt-4 divide-y divide-neutral-100" data-fn-saved-list>
+          @foreach ($bookmarks as $b)
+            <li class="flex items-center justify-between gap-4 py-3"
+                data-saved-item data-title="{{ esc_attr($b['title']) }}" data-saved="{{ $b['saved'] }}" data-published="{{ $b['published'] }}">
+              <a href="{{ $b['url'] }}" class="font-medium hover:text-brand-700">{!! $b['title'] !!}</a>
+              <x-bookmark-button :post="$b['id']" />
+            </li>
+          @endforeach
+        </ul>
+      @endif
+    </section>
+
+    <section class="mt-6 rounded border border-neutral-200 p-4">
       <h2 class="font-display text-xl font-bold">{{ __('Email preferences', 'foldednews') }}</h2>
-      <p class="mt-1 text-sm text-ink-500">{{ __('Newsletters, topic alerts and bookmarks are added in Stages 12 & 15.', 'foldednews') }}</p>
+      <p class="mt-1 text-sm text-ink-500">{{ __('Manage newsletters from the link in any email (Stage 12).', 'foldednews') }}</p>
     </section>
   </div>
 @endsection

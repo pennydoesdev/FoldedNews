@@ -59,6 +59,7 @@ function modules(): array
         Modules\Newsletter::class,
         Modules\Ads::class,
         Modules\Ai::class,
+        Modules\Bookmarks::class,
         Modules\Schema::class,
     ]);
 }

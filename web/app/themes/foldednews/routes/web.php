@@ -29,11 +29,27 @@ Route::get('/account/', function () {
 
     $userId = get_current_user_id();
 
+    $bookmarks = [];
+    foreach (\FoldedNews\Newsroom\Bookmarks\Bookmarks::ids($userId) as $postId) {
+        $post = get_post($postId);
+        if (! $post instanceof \WP_Post) {
+            continue;
+        }
+        $bookmarks[] = [
+            'id' => $postId,
+            'title' => get_the_title($post),
+            'url' => (string) get_permalink($post),
+            'saved' => \FoldedNews\Newsroom\Bookmarks\Bookmarks::savedAt($userId, $postId),
+            'published' => (int) get_post_time('U', false, $post),
+        ];
+    }
+
     return view('account', [
         'user' => wp_get_current_user(),
         'isMember' => \FoldedNews\Newsroom\Billing\Account::isMember($userId),
         'status' => (string) get_user_meta($userId, \FoldedNews\Newsroom\Billing\Account::STATUS_META, true),
         'hasCustomer' => (string) get_user_meta($userId, \FoldedNews\Newsroom\Billing\Account::CUSTOMER_META, true) !== '',
+        'bookmarks' => $bookmarks,
     ]);
 })->name('account');
 
