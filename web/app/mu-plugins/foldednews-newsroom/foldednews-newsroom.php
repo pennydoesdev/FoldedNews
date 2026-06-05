@@ -62,6 +62,7 @@ function modules(): array
         Modules\Bookmarks::class,
         Modules\DesktopMode::class,
         Modules\Health::class,
+        Modules\Performance::class,
         Modules\Schema::class,
     ]);
 }

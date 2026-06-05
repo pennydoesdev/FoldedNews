@@ -339,6 +339,19 @@ Automated: `tests/Unit/BookmarksTest.php` (pure toggle/merge); PHPStan level 5.
 | S3 / AI / Stripe failure | bad creds → safe degradation (offload retry, AI fallback, campaign pause) |
 | Dashboards | System Health (logs), Ad metrics, AI usage log |
 
+## Manual QA — Stage 19 (Performance)
+
+- [ ] Homepage queries are cached (transient `fn_home_*`, 5 min) and flushed on
+  publish/update; no duplicate queries (dedup via `Feed`).
+- [ ] Images: lazy-loaded, width/height set (no layout shift), `srcset`/`sizes`,
+  CDN URLs only (no public local uploads), hero uses `fetchpriority=high`.
+- [ ] Heavy libs (Milkdown, Chart.js, Leaflet, Mermaid, Video.js) are code-split
+  and load on demand; main `app.js` stays small.
+- [ ] Skeleton shimmer shows on viz/ad mounts until ready; respects
+  `prefers-reduced-motion`.
+- [ ] Preconnect to the CDN host is emitted when `CDN_URL` is set.
+- [ ] Lighthouse / CWV: target 95+ (verify on a live, cached environment).
+
 ## Per-stage checklists
 
 Each stage appends its manual QA checklist here as it lands (content model,

@@ -6,7 +6,7 @@ with **Acorn** (Laravel-style providers/services), **Blade**, **Tailwind CSS 4**
 and **Vite**. This is the structure **Radicle** composes (Bedrock + Sage +
 Acorn); see `docs/vendor-references.md`.
 
-> Build status: **Stage 18 — system health, debugging & QA**. The platform is built in 20 staged
+> Build status: **Stage 19 — performance & image delivery**. The platform is built in 20 staged
 > increments (see the project plan). Each stage must build, test, and pass
 > manual QA before the next begins.
 

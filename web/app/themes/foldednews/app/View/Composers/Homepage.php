@@ -22,6 +22,25 @@ class Homepage extends Composer
      */
     public function with(): array
     {
+        $order = (isset($_GET['order']) && strtoupper((string) $_GET['order']) === 'ASC') ? 'ASC' : 'DESC';
+        $key = 'fn_home_'.$order;
+
+        $cached = get_transient($key);
+        if (is_array($cached)) {
+            return $cached;
+        }
+
+        $data = $this->assemble();
+        set_transient($key, $data, 300); // 5 min; flushed on save via Performance module
+
+        return $data;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function assemble(): array
+    {
         $feed = new Feed();
 
         return [
