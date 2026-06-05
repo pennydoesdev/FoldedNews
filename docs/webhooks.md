@@ -1,7 +1,24 @@
 # Webhooks
 
-> Status: skeleton. Populated in **Stage 10 (Stripe subscriptions)** and
-> **Stage 13 (advertising invoices)**.
+> Status: **Stage 10 implemented** (subscriptions). Stage 13 reuses this for
+> advertising invoices.
+
+## Implementation
+
+- Endpoint: `POST /wp-json/foldednews/v1/stripe/webhook` (public; authenticated by
+  signature, not WP auth).
+- **Signature verified** before any processing via `Billing\Webhook::verify`
+  (HMAC-SHA256 over `{timestamp}.{payload}`, constant-time compare, 300s replay
+  tolerance) — unit-tested in `tests/Unit/WebhookTest.php`.
+- **Idempotent**: each Stripe event ID is recorded (transient); duplicates return
+  200 without reprocessing.
+- Stripe = billing truth; WordPress mirrors subscription status into user meta
+  (`_fn_subscription_status`, `_fn_stripe_customer`, `_fn_period_end`) and that
+  drives access (`Billing\Account::isMember`, used by the Stage 11 meter).
+- Signup via Checkout (`/billing/checkout`), self-service via Customer Portal
+  (`/billing/portal`). Client: lean `Billing\StripeClient` over the WP HTTP API
+  (`stripe/stripe-php` is the documented drop-in).
+
 
 ## Stripe (Stage 10)
 

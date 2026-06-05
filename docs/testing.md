@@ -181,6 +181,27 @@ Automated: `tests/Unit/VideoTest.php`; PHPStan level 5 covers the module;
 
 Automated: `tests/Unit/PodcastTest.php`; PHPStan level 5 covers Importer/Feed/module.
 
+## Manual QA — Stage 10 (Accounts + Stripe)
+
+Set `STRIPE_*` env vars; configure the webhook endpoint in the Stripe dashboard
+(`/wp-json/foldednews/v1/stripe/webhook`); use `stripe listen` for local dev.
+
+- [ ] Create a free WordPress account; visit `/account/` (redirects to login if out).
+- [ ] Subscribe with test card `4242 4242 4242 4242` (Checkout) → return to account,
+  status becomes **Active member** (via `checkout.session.completed` +
+  `customer.subscription.created`).
+- [ ] Manage billing opens the **Customer Portal**; cancel → access reverts to Free
+  (`customer.subscription.deleted`).
+- [ ] Renew / resume → active again.
+- [ ] Failed payment (`4000 0000 0000 0341`) → status `past_due`
+  (`invoice.payment_failed`).
+- [ ] Re-send a webhook from the dashboard → handled **idempotently** (no double
+  processing).
+- [ ] Invalid signature is rejected (400).
+
+Automated: `tests/Unit/WebhookTest.php` verifies signature + replay protection;
+PHPStan level 5 covers the billing module.
+
 ## Per-stage checklists
 
 Each stage appends its manual QA checklist here as it lands (content model,

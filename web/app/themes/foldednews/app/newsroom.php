@@ -226,6 +226,16 @@ function show_meta(int $termId, string $key): string
     return is_string($value) ? $value : '';
 }
 
+/* ---- Access (Stage 10) ---------------------------------------------------- */
+
+function is_member(?int $userId = null): bool
+{
+    $userId ??= get_current_user_id();
+
+    return class_exists(\FoldedNews\Newsroom\Billing\Account::class)
+        && \FoldedNews\Newsroom\Billing\Account::isMember((int) $userId);
+}
+
 /**
  * @return list<array{label: string, url: string}>
  */
