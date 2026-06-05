@@ -224,6 +224,29 @@ Defaults: 5 free articles/calendar month, 24h unlock (filters
 Automated: `tests/Unit/MeterTest.php` covers the pure decision engine (limit,
 no-recount, timed unlock expiry, monthly reset); PHPStan level 5 covers the module.
 
+## Manual QA — Stage 12 (Newsletters)
+
+Sending uses `wp_mail` (Mailpit in dev, msmtp/SMTP in prod).
+
+- [ ] Create a List (Contacts → Lists). Create a signup form (the
+  `<x-newsletter-signup list="..."/>` component is on the homepage).
+- [ ] Subscribe an email via the form → a `fn_contact` is created, added to the
+  list, status `subscribed`, with a consent entry (time/source/IP).
+- [ ] Visit the preferences link (`/newsletter/preferences/?email=&token=`) →
+  update list memberships; **Unsubscribe from all** sets status `unsubscribed`
+  (suppression).
+- [ ] An invalid/forged token is rejected.
+- [ ] Newsletter admin (Contacts → Newsletter): **Export contacts CSV** downloads;
+  **Import WordPress users**; **Import CSV**; **Queue send** a campaign to a list.
+- [ ] Queued campaign sends in batches via cron; each email has a working
+  one-click unsubscribe; suppressed contacts are skipped.
+
+Automated: `tests/Unit/NewsletterTest.php` (signed token + CSV); PHPStan level 5
+covers the module.
+
+> Follow-ups (not yet built): popups/fly-ins, visual campaign/automation builder,
+> welcome series, segments.
+
 ## Per-stage checklists
 
 Each stage appends its manual QA checklist here as it lands (content model,

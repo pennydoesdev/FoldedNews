@@ -36,3 +36,26 @@ Route::get('/account/', function () {
         'hasCustomer' => (string) get_user_meta($userId, \FoldedNews\Newsroom\Billing\Account::CUSTOMER_META, true) !== '',
     ]);
 })->name('account');
+
+/*
+| Newsletter preferences / one-click unsubscribe (Stage 12). Reached via a
+| signed link in every email; the token authorizes changes without login.
+*/
+Route::get('/newsletter/preferences/', function () {
+    $email = isset($_GET['email']) ? strtolower(sanitize_email(wp_unslash($_GET['email']))) : '';
+    $token = isset($_GET['token']) ? sanitize_text_field(wp_unslash($_GET['token'])) : '';
+
+    $valid = \FoldedNews\Newsroom\Newsletter\Token::verify($email, $token, wp_salt('nonce'));
+    $contactId = $valid ? \FoldedNews\Newsroom\Newsletter\Contacts::findByEmail($email) : 0;
+
+    $lists = get_terms(['taxonomy' => 'mailing_list', 'hide_empty' => false]);
+    $subscribed = $contactId > 0 ? wp_get_object_terms($contactId, 'mailing_list', ['fields' => 'slugs']) : [];
+
+    return view('newsletter-preferences', [
+        'valid' => $valid && $contactId > 0,
+        'email' => $email,
+        'token' => $token,
+        'lists' => is_array($lists) ? $lists : [],
+        'subscribed' => is_array($subscribed) ? $subscribed : [],
+    ]);
+})->name('newsletter.preferences');
