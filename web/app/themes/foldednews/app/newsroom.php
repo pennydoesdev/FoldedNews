@@ -108,3 +108,92 @@ function is_updated(WP_Post|int $post): bool
 
     return ($modified - $published) > 60;
 }
+
+/* ---- Video (Stage 8) ------------------------------------------------------ */
+
+function video_aspect(WP_Post|int $post): string
+{
+    $value = (string) get_post_meta(id($post), '_fn_aspect', true);
+
+    return in_array($value, ['16:9', '9:16', '1:1', '4:5', '21:9'], true) ? $value : '16:9';
+}
+
+function aspect_class(string $aspect): string
+{
+    return 'fn-aspect-'.str_replace(':', 'x', $aspect);
+}
+
+function video_src(WP_Post|int $post): string
+{
+    $value = get_post_meta(id($post), '_fn_video_src', true);
+
+    return is_string($value) ? $value : '';
+}
+
+function video_mime(string $src): string
+{
+    return match (strtolower(pathinfo($src, PATHINFO_EXTENSION))) {
+        'webm' => 'video/webm',
+        'ogv', 'ogg' => 'video/ogg',
+        'mov' => 'video/quicktime',
+        'm3u8' => 'application/x-mpegURL',
+        default => 'video/mp4',
+    };
+}
+
+function video_poster(WP_Post|int $post): string
+{
+    $attachment = (int) get_post_meta(id($post), '_fn_poster', true);
+
+    if ($attachment > 0 && is_string($url = wp_get_attachment_url($attachment))) {
+        return $url;
+    }
+
+    $thumb = get_the_post_thumbnail_url(id($post), 'large');
+
+    return is_string($thumb) ? $thumb : '';
+}
+
+/**
+ * @return list<array{lang: string, label: string, src: string}>
+ */
+function video_captions(WP_Post|int $post): array
+{
+    $value = get_post_meta(id($post), '_fn_captions', true);
+
+    if (! is_array($value)) {
+        return [];
+    }
+
+    $tracks = [];
+    foreach ($value as $track) {
+        if (is_array($track) && ! empty($track['src'])) {
+            $tracks[] = [
+                'lang' => (string) ($track['lang'] ?? ''),
+                'label' => (string) ($track['label'] ?? ''),
+                'src' => (string) $track['src'],
+            ];
+        }
+    }
+
+    return $tracks;
+}
+
+function video_chapters(WP_Post|int $post): string
+{
+    $value = get_post_meta(id($post), '_fn_chapters', true);
+
+    return is_string($value) ? $value : '';
+}
+
+function video_transcript(WP_Post|int $post): string
+{
+    $value = get_post_meta(id($post), '_fn_transcript', true);
+
+    return is_string($value) ? $value : '';
+}
+
+function video_is_live(WP_Post|int $post): bool
+{
+    return (bool) get_post_meta(id($post), '_fn_live', true);
+}

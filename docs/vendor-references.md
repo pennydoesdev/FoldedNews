@@ -41,6 +41,7 @@ Provider adapters (Stripe, S3, AI, ads) are added in their stages using the
 | OpenStreetMap tiles | https://wiki.openstreetmap.org/wiki/Tile_servers | — | Base map tiles |
 | Chart.js | https://www.chartjs.org/docs/latest/ | `chart.js` `^4.5` | Bar/line/area/scatter/stacked charts |
 | Mermaid | https://mermaid.js.org/intro/ | `mermaid` `^11` | Flow/org/relationship/process diagrams |
+| Video.js | https://videojs.com/guides/ | `video.js` `^8.23` | Open-source video player (Stage 8) — captions, chapters, all aspect ratios |
 | MapLibre GL JS | https://maplibre.org/maplibre-gl-js/docs/ | `maplibre-gl` (follow-up) | Advanced vector/cinematic/scrollytelling maps |
 | D3 / Observable Plot | https://d3js.org/ · https://observablehq.com/plot/ | (follow-up) | Bespoke graphics |
 

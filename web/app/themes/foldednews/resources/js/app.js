@@ -7,5 +7,6 @@
 
 import './live-blog.js'
 import './viz.js'
+import './video.js'
 
 import.meta.glob('./**/*.js')

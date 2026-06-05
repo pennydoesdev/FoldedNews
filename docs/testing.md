@@ -146,6 +146,24 @@ In an article's Markdown, add viz directives and publish:
 Automated: `tests/Unit/MarkdownTest.php` covers viz block output; `npm run build`
 verifies the bundles + per-type code splitting.
 
+## Manual QA — Stage 8 (Video hub)
+
+Create `fn_video` posts; set the Video meta (source URL, aspect, poster,
+captions `lang|label|url`, live flag); assign Shows/Topics.
+
+- [ ] Upload a 16:9 video → plays in the **Video.js** player at 16:9.
+- [ ] Upload a 9:16 video → plays at 9:16; appears in the vertical **Shorts** strip.
+- [ ] Captions track shows in the player; chapters track loads if set.
+- [ ] Video hub (`/videos/`): hero, live slot, latest grid, shows row, topics row.
+- [ ] A 9:16 strip is inserted **every 3 rows** (default; `foldednews/video/strip_every`).
+- [ ] Video search filters the hub.
+- [ ] Media URLs are CDN (Stage 5 offload), not local uploads.
+- [ ] Dark viewing surface on hub + single video; mobile responsive.
+- [ ] Video.js + its CSS load only on pages that contain a player (Network panel).
+
+Automated: `tests/Unit/VideoTest.php`; PHPStan level 5 covers the module;
+`npm run build` verifies the lazy-loaded player bundle.
+
 ## Per-stage checklists
 
 Each stage appends its manual QA checklist here as it lands (content model,
