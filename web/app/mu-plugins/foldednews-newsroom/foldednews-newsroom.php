@@ -63,6 +63,7 @@ function modules(): array
         Modules\DesktopMode::class,
         Modules\Health::class,
         Modules\Performance::class,
+        Modules\Security::class,
         Modules\Schema::class,
     ]);
 }

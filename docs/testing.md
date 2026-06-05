@@ -352,6 +352,31 @@ Automated: `tests/Unit/BookmarksTest.php` (pure toggle/merge); PHPStan level 5.
 - [ ] Preconnect to the CDN host is emitted when `CDN_URL` is set.
 - [ ] Lighthouse / CWV: target 95+ (verify on a live, cached environment).
 
+## Manual QA — Stage 20 (Hardening)
+
+Security:
+- [ ] Public mutating endpoints (newsletter subscribe/preferences, meter unlock,
+  ad impression, bookmark toggle) are **rate-limited** per IP (60/min → 429).
+- [ ] Executable uploads (`.php`, `.exe`, `.sh`, `.js`, `.htaccess`, …) are blocked.
+- [ ] Security headers present: `X-Content-Type-Options`, `Referrer-Policy`,
+  `X-Frame-Options`.
+- [ ] Every write endpoint checks a nonce + capability; reads use permission
+  callbacks; the Stripe webhook verifies its signature; `$wpdb` uses prepared
+  statements; no secrets are exposed.
+
+Accessibility (WCAG 2.2 AA):
+- [ ] Skip link, keyboard navigation, visible `:focus-visible` outline.
+- [ ] Heading order is correct; contrast is sufficient.
+- [ ] `prefers-reduced-motion` disables animation; captions/transcripts available.
+
+### Final QA (full install)
+
+Install fresh → migrate/setup → build → seed → publish article → upload media →
+verify S3/CDN → live blog → map/chart → video → podcast → account → subscribe
+(Stripe test) → hit meter → unlock with ad → bookmark → newsletter test → ad
+campaign → run AI feature → Desktop Mode → QA extension → deploy staging →
+production dry-run → rollback dry-run.
+
 ## Per-stage checklists
 
 Each stage appends its manual QA checklist here as it lands (content model,
