@@ -1,0 +1,17 @@
+# DDEV local environment for FoldedNews (Roots-recommended for Bedrock/Sage).
+# Boots Nginx + PHP-FPM (FastCGI) + MariaDB. Docroot is the Bedrock web/ dir.
+# Usage: `ddev start` then visit https://foldednews.ddev.site
+# Docs: https://ddev.readthedocs.io/  ·  https://docs.roots.io/sage/master/
+name: foldednews
+type: wordpress
+docroot: web
+php_version: "8.4"
+webserver_type: nginx-fpm
+nodejs_version: "22"
+corepack_enable: true
+database:
+  type: mariadb
+  version: "10.11"
+# DDEV provides DB creds db/db/db on host "db". Mirror them in .env:
+#   DB_NAME=db  DB_USER=db  DB_PASSWORD=db  DB_HOST=db
+#   WP_HOME=https://foldednews.ddev.site  WP_SITEURL=${WP_HOME}/wp

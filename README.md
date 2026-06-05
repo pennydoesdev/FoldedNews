@@ -45,8 +45,11 @@ cp .env.example .env            # fill DB creds, URLs, salts (https://roots.io/s
 composer install                # root: WordPress core + Bedrock libs
 composer install --working-dir=web/app/themes/foldednews   # theme: Acorn
 cd web/app/themes/foldednews && npm install && npm run build
-# point your web server's docroot at web/ and create the database, then visit WP_HOME
+# serve web/ via a web server with PHP-FPM (FastCGI) + MySQL, then visit WP_HOME
 ```
+
+Fastest path (Nginx + **PHP-FPM** + MariaDB out of the box) is DDEV — see
+`.ddev/config.yaml` and `docs/deployment.md`: `ddev start && ddev composer install`.
 
 Manual QA for this stage: `docs/testing.md`. Deployment: `docs/deployment.md`.
 
