@@ -9,5 +9,6 @@ import './live-blog.js'
 import './viz.js'
 import './video.js'
 import './account.js'
+import './meter.js'
 
 import.meta.glob('./**/*.js')

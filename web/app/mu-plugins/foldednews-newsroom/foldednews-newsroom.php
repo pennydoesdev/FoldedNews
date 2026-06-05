@@ -55,6 +55,7 @@ function modules(): array
         Modules\Video::class,
         Modules\Podcast::class,
         Modules\Billing::class,
+        Modules\Meter::class,
         Modules\Schema::class,
     ]);
 }

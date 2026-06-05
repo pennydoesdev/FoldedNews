@@ -31,12 +31,20 @@
         </figure>
       @endif
 
-      <div class="prose max-w-none">
-        @php(the_content())
-      </div>
+      @if (\FoldedNews\Newsroom\Meter\Meter::allowed($id))
+        <div class="prose max-w-none">
+          @php(the_content())
+        </div>
 
-      <x-source-note :post="$id" />
-      <x-correction-notice :post="$id" />
+        <x-source-note :post="$id" />
+        <x-correction-notice :post="$id" />
+      @else
+        <div class="prose max-w-none">
+          <p>{{ wp_trim_words(get_the_excerpt(), 60) }}</p>
+        </div>
+
+        <x-meter-wall :post="$id" />
+      @endif
     </article>
   @endwhile
 @endsection

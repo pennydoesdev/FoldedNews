@@ -202,6 +202,28 @@ Set `STRIPE_*` env vars; configure the webhook endpoint in the Stripe dashboard
 Automated: `tests/Unit/WebhookTest.php` verifies signature + replay protection;
 PHPStan level 5 covers the billing module.
 
+## Manual QA — Stage 11 (Metered access + ad unlock)
+
+Defaults: 5 free articles/calendar month, 24h unlock (filters
+`foldednews/meter/limit`, `foldednews/meter/unlock_ttl`).
+
+- [ ] As a logged-out reader, open 5 different articles → all readable.
+- [ ] Open a 6th → content is truncated and the meter wall shows.
+- [ ] "Watch ad to unlock" → after the (placeholder) ad, the article unlocks for
+  24h and the page reloads with full content.
+- [ ] Re-reading an already-counted article does **not** consume another credit.
+- [ ] Mark an article **Free** or **Public safety** (Access meta box) → never
+  metered.
+- [ ] Subscribe (Stage 10) → unlimited access (meter bypassed for members).
+- [ ] Comp access (`_fn_comp_access` user meta) → bypasses the meter.
+- [ ] Logged-in count syncs across devices (user meta); logged-out uses a signed
+  cookie that can't be tampered to raise the limit.
+- [ ] Monthly reset: change the month → counter resets.
+- [ ] `/account/` and non-article pages never count.
+
+Automated: `tests/Unit/MeterTest.php` covers the pure decision engine (limit,
+no-recount, timed unlock expiry, monthly reset); PHPStan level 5 covers the module.
+
 ## Per-stage checklists
 
 Each stage appends its manual QA checklist here as it lands (content model,
