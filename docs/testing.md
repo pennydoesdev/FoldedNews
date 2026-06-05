@@ -73,6 +73,21 @@ and a People entry set as an article's `_fn_byline`).
 - [ ] Zilla Slab renders on headings/brand.
 - [ ] Lighthouse/CWV baseline acceptable (full optimisation is Stage 19).
 
+## Manual QA — Stage 4 (Markdown over Gutenberg)
+
+- [ ] Edit an Article: the "Newsroom Markdown" meta box is present.
+- [ ] Write Markdown (headings, list, `**bold**`, `:::note … :::`), save.
+- [ ] `post_content` now holds Gutenberg blocks; reopen in the block editor and
+  confirm the blocks render and are valid (no "invalid block" warnings).
+- [ ] Reload the editor — the Markdown source persists (`_newsroom_markdown_source`).
+- [ ] Front end renders the converted blocks correctly.
+- [ ] Edit a block directly without changing Markdown, save — block edits are
+  kept (hash guard skips reconversion).
+- [ ] Raw `<script>` in Markdown is escaped, not executed.
+
+Automated: `tests/Unit/MarkdownTest.php` (Pest) covers the pure-PHP converter;
+PHPStan level 5 covers the module.
+
 ## Per-stage checklists
 
 Each stage appends its manual QA checklist here as it lands (content model,

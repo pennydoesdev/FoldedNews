@@ -28,13 +28,24 @@ role, social), published + updated dates, `NewsArticle` schema
 (`datePublished`/`dateModified`), featured image, topic relationships, source
 notes, correction notices.
 
-## Authoring (Stage 4)
+## Authoring (Stage 4 — implemented, foundation)
 
 Gutenberg stays the block engine; Markdown is the authoring interface.
-`post_content` stores block HTML; `_newsroom_markdown_source` stores canonical
-Markdown. Directives: `:::note`, `:::context`, `:::timeline`, `:::quote`,
-`:::source`, `:::correction`, `:::live-update`, `:::map`, `:::chart`,
-`:::diagram`.
+`_newsroom_markdown_source` (REST-exposed) is canonical; on save the `Markdown`
+module converts it to Gutenberg block HTML in `post_content` via the pure-PHP
+`MarkdownToBlocks` service. A hash guard (`_newsroom_markdown_hash`) means
+conversion only runs when the Markdown changes, so direct block edits survive
+and Gutenberg compatibility is intact. A classic meta box provides the authoring
+textarea today.
+
+Supported: headings, paragraphs, lists, blockquotes, fenced code, rules, inline
+`**bold**`/`*italic*`/`` `code` ``/`[links]()` (HTML escaped, safe URL schemes),
+and `:::` directives (`note`, `context`, `timeline`, `quote`, `source`,
+`correction`, `live-update`, `map`, `chart`, `diagram`) → group blocks with
+`fn-*` classNames.
+
+Next increments: a Gutenberg sidebar editor (React) + real custom blocks
+(Stage 7 replaces map/chart/diagram group placeholders with interactive blocks).
 
 ## Review & corrections
 

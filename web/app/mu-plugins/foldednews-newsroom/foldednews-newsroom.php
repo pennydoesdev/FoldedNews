@@ -49,6 +49,7 @@ function modules(): array
         Modules\ContentTypes::class,
         Modules\Taxonomies::class,
         Modules\Meta::class,
+        Modules\Markdown::class,
         Modules\Schema::class,
     ]);
 }
