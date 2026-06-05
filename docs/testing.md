@@ -247,6 +247,27 @@ covers the module.
 > Follow-ups (not yet built): popups/fly-ins, visual campaign/automation builder,
 > welcome series, segments.
 
+## Manual QA — Stage 13 (Advertiser portal + ads)
+
+- [ ] An **Advertiser** role exists; an advertiser user can manage their own
+  Creatives in wp-admin but not articles.
+- [ ] Create a Campaign (status active, pricing). Create a Creative (featured
+  image, campaign, placement, click URL, weight).
+- [ ] As admin, **approve** the creative; only approvers see the approve toggle.
+- [ ] The ad **serves** in the matching slot (leaderboard / in-article), labelled
+  "Advertisement", `rel="sponsored nofollow"`.
+- [ ] Scrolling the ad into view records a viewable **impression**
+  (`fn_ad_events`); clicking records a **click** and redirects to the advertiser.
+- [ ] Ad metrics dashboard (Campaigns → Ad metrics) shows impressions/clicks/CTR.
+- [ ] Pause a campaign → its creatives stop serving.
+- [ ] Pause-on-billing-failure: a Stripe `invoice.payment_failed` with
+  `metadata.fn_campaign` pauses that campaign.
+- [ ] Privacy: only logged-in readers accrue topic interests; no anonymous
+  tracking cookie/fingerprinting.
+
+Automated: `tests/Unit/AdSelectorTest.php` (weighted selection); PHPStan level 5
+covers the ads module + events table.
+
 ## Per-stage checklists
 
 Each stage appends its manual QA checklist here as it lands (content model,

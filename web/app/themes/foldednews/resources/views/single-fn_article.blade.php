@@ -36,6 +36,8 @@
           @php(the_content())
         </div>
 
+        <x-ad-slot placement="in_article" />
+
         <x-source-note :post="$id" />
         <x-correction-notice :post="$id" />
       @else

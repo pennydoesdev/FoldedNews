@@ -19,6 +19,10 @@
     <div id="app" class="min-h-screen flex flex-col">
       @include('sections.header')
 
+      <div class="mx-auto w-full max-w-5xl px-4">
+        <x-ad-slot placement="leaderboard" />
+      </div>
+
       <main id="main" class="main flex-1" role="main">
         @yield('content')
       </main>

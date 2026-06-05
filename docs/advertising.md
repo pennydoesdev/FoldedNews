@@ -1,6 +1,28 @@
 # Advertising Platform
 
-> Status: skeleton. Populated in **Stage 13 (Advertiser portal + ad platform)**.
+> Status: **Stage 13 implemented (foundation).** Advertiser role, Creative CPT
+> with admin approval, weighted ad server, impression/click tracking + metrics,
+> first-party interest signals, and pause-on-billing-failure. Front-end
+> self-serve portal, full invoice UI, and segment/trending engine are follow-ups.
+
+## Implementation
+
+- **Roles:** `advertiser` (manages own `fn_creative`; no article access). Admins/
+  sales approve creatives (`edit_others_fn_creatives`) and manage campaigns.
+- **Model:** `fn_creative` (campaign, placement/format, click URL, image, weight,
+  `_fn_approved`) under `fn_campaign` (status active/paused, pricing model + price).
+- **Serving:** `AdServer::select(placement)` → weighted `Selector` over approved
+  creatives in active campaigns → `<x-ad-slot placement="…"/>` (leaderboard +
+  in-article wired; all 17 placements selectable). "Advertisement" labelled,
+  `rel="sponsored nofollow"`.
+- **Tracking:** clicks via `GET /ads/click?c=` (record + 302 to advertiser URL);
+  viewable impressions beaconed (`POST /ads/impression`, ≥50% for 1s) to a
+  dedicated `fn_ad_events` table (atomic upsert). Metrics dashboard aggregates
+  impressions/clicks/CTR per campaign.
+- **Billing:** reuses the Stage 10 Stripe client/webhook — an ad invoice with
+  `metadata.fn_campaign` that fails (`invoice.payment_failed`) pauses the campaign.
+
+## Audience intelligence — privacy rules (enforced)
 
 Publisher-owned advertising: advertisers, sales team, admins. Advertiser portal
 (accounts, campaigns, creatives, placements, billing, metrics). Ad formats
@@ -29,3 +51,8 @@ First-party only: topics read, sections visited, newsletters, podcasts, videos,
 interest graph, behavioral segments, trending engine. **Prohibited:**
 fingerprinting, cross-site identity graphs, undisclosed sensitive profiling,
 browser privacy circumvention.
+
+Implemented: `Ads\Interest` records topic-view counts for **logged-in readers
+only** (user meta) — no anonymous profiling, no cookies-for-tracking, no
+fingerprinting. This feeds contextual targeting + a trending foundation; the
+full segment/trending engine is a follow-up.

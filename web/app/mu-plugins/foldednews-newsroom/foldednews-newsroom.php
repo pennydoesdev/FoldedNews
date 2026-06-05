@@ -57,6 +57,7 @@ function modules(): array
         Modules\Billing::class,
         Modules\Meter::class,
         Modules\Newsletter::class,
+        Modules\Ads::class,
         Modules\Schema::class,
     ]);
 }

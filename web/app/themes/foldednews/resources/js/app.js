@@ -11,5 +11,6 @@ import './video.js'
 import './account.js'
 import './meter.js'
 import './newsletter.js'
+import './ads.js'
 
 import.meta.glob('./**/*.js')

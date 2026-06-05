@@ -4,4 +4,8 @@ parameters:
         - web/app/mu-plugins/foldednews-newsroom
     bootstrapFiles:
         - vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
+        - phpstan-bootstrap.php
+    dynamicConstantNames:
+        - ABSPATH
+        - WPINC
     treatPhpDocTypesAsCertain: false
