@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+/* Brand typeface: Zilla Slab (self-hosted via @fontsource, no external requests). */
+@import "@fontsource/zilla-slab/400.css";
+@import "@fontsource/zilla-slab/600.css";
+@import "@fontsource/zilla-slab/700.css";
+
+/* Tailwind content sources (Blade, PHP, JS). */
+@source "../../app/**/*.php";
+@source "../views/**/*.blade.php";
+@source "../js/**/*.js";
+
+/* Newsroom design tokens. These flow into theme.json via @roots/vite-plugin. */
+@theme {
+  --font-display: "Zilla Slab", Georgia, "Times New Roman", serif;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  --color-paper: #ffffff;
+  --color-ink-900: #0a0a0a;
+  --color-ink-700: #262626;
+  --color-ink-500: #525252;
+  --color-brand-600: #b91c1c;
+  --color-brand-700: #991b1b;
+  --color-breaking: #b91c1c;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-ink-900);
+    background: var(--color-paper);
+  }
+
+  h1, h2, h3, .font-display {
+    font-family: var(--font-display);
+  }
+}

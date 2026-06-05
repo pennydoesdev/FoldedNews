@@ -1,0 +1,117 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  THEME_DIR: web/app/themes/foldednews
+
+jobs:
+  php:
+    name: PHP (lint / analyse / test)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          coverage: none
+          tools: composer:v2
+
+      - name: Validate composer files
+        run: |
+          composer validate --no-check-publish
+          composer validate --no-check-publish --working-dir="$THEME_DIR"
+
+      - name: Install (root)
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Install (theme)
+        run: composer install --no-interaction --prefer-dist --no-progress --working-dir="$THEME_DIR"
+
+      - name: PHP lint
+        run: |
+          find config web/app/mu-plugins "$THEME_DIR/app" -name '*.php' -print0 \
+            | xargs -0 -n1 -P4 php -l
+
+      - name: PHPStan
+        run: vendor/bin/phpstan analyse --no-progress
+
+      - name: Pest
+        run: vendor/bin/pest
+
+  frontend:
+    name: Frontend (build / lint / typecheck)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web/app/themes/foldednews
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install
+        run: npm install --no-audit --no-fund
+
+      - name: ESLint
+        if: ${{ hashFiles('web/app/themes/foldednews/.eslintrc*', 'web/app/themes/foldednews/eslint.config.js') != '' }}
+        run: npx eslint resources
+
+      - name: TypeScript check
+        if: ${{ hashFiles('web/app/themes/foldednews/tsconfig.json') != '' }}
+        run: npx tsc --noEmit
+
+      - name: Vite build
+        run: npm run build
+
+  e2e:
+    name: Playwright + a11y smoke
+    runs-on: ubuntu-latest
+    # Activates automatically once browser tests are added (Stage 3+).
+    if: ${{ hashFiles('tests/e2e/**') != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm ci
+      - run: npx playwright install --with-deps
+      - run: npx playwright test
+
+  security:
+    name: Secret + dependency scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Secret scan (gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          tools: composer:v2
+
+      - name: Composer audit
+        run: composer audit || true
+
+      - name: npm audit
+        working-directory: web/app/themes/foldednews
+        run: npm audit --audit-level=high || true

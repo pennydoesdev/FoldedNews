@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@source "../views/**/*.blade.php";
+
+/* Block editor brand typography, mirrors the front end. */
+@import "@fontsource/zilla-slab/600.css";
+
+.editor-styles-wrapper h1,
+.editor-styles-wrapper h2,
+.editor-styles-wrapper h3 {
+  font-family: "Zilla Slab", Georgia, serif;
+}

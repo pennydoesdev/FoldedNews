@@ -1,0 +1,41 @@
+# Application
+web/app/plugins/*
+!web/app/plugins/.gitkeep
+web/app/mu-plugins/*/vendor/
+web/app/upgrade
+web/app/uploads/*
+!web/app/uploads/.gitkeep
+web/app/cache/*
+
+# WordPress core (installed by Composer)
+web/wp
+web/.htaccess
+
+# Dependencies
+/vendor
+web/app/themes/foldednews/vendor
+node_modules
+web/app/themes/foldednews/node_modules
+
+# Build artifacts
+web/app/themes/foldednews/public/build
+web/app/themes/foldednews/public/hot
+
+# Logs
+*.log
+
+# Dotenv
+.env
+.env.*
+!.env.example
+
+# Composer / tooling
+auth.json
+.phpunit.result.cache
+.phpunit.cache
+.pint.cache
+phpstan.tmp
+
+# OS / editor
+.DS_Store
+Thumbs.db
