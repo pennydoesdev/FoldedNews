@@ -299,6 +299,15 @@ the AI layer.
 
 Automated: `tests/Unit/BookmarksTest.php` (pure toggle/merge); PHPStan level 5.
 
+## Manual QA — Stage 16 (Desktop Mode)
+
+- [ ] "Newsroom Desk" appears in wp-admin with a responsive grid of app cards.
+- [ ] Every admin screen works in normal admin and resizes inside a window
+  (no fixed full-screen layouts).
+- [ ] In WordPress Desktop Mode, `body.is-desktop-mode` is set and
+  `window.fnFetch` routes through `wp.desktop.fetch()` (else standard `fetch`).
+- [ ] wp-admin is not replaced; all default screens still work.
+
 ## Per-stage checklists
 
 Each stage appends its manual QA checklist here as it lands (content model,

@@ -60,6 +60,7 @@ function modules(): array
         Modules\Ads::class,
         Modules\Ai::class,
         Modules\Bookmarks::class,
+        Modules\DesktopMode::class,
         Modules\Schema::class,
     ]);
 }
