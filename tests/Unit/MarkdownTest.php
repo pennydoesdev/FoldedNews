@@ -26,3 +26,15 @@ it('escapes raw HTML in source', function () {
     expect(MarkdownToBlocks::convert('a <script>x</script> b'))
         ->not->toContain('<script>');
 });
+
+it('emits interactive viz figures for map/chart/diagram', function () {
+    $out = MarkdownToBlocks::convert(":::chart\n{\"type\":\"bar\"}\n:::");
+
+    expect($out)
+        ->toContain('<!-- wp:html -->')
+        ->toContain('data-fn-viz="chart"')
+        ->toContain('class="fn-viz-mount"');
+
+    preg_match('/data-fn-config="([^"]+)"/', $out, $m);
+    expect(base64_decode($m[1]))->toContain('"type":"bar"');
+});

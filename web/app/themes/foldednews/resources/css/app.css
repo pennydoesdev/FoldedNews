@@ -35,3 +35,36 @@
     font-family: var(--font-display);
   }
 }
+
+@layer components {
+  /* Interactive maps / charts / diagrams (Stage 7). */
+  .fn-viz {
+    margin: 1.5rem 0;
+  }
+
+  .fn-viz-mount {
+    min-height: 240px;
+    width: 100%;
+  }
+
+  .fn-chart .fn-viz-mount {
+    position: relative;
+    height: 360px;
+  }
+
+  .fn-map .fn-viz-mount {
+    min-height: 400px;
+  }
+
+  .fn-diagram .fn-viz-mount svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .fn-viz-caption {
+    margin-top: 0.5rem;
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    color: var(--color-ink-500);
+  }
+}

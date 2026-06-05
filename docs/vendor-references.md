@@ -33,6 +33,22 @@ Provider adapters (Stripe, S3, AI, ads) are added in their stages using the
 | Playwright | https://playwright.dev/ | (Stage 3+) |
 | Gitleaks | https://github.com/gitleaks/gitleaks-action | CI action |
 
+## Visualization (Stage 7)
+
+| Component | Official docs | Package | Use |
+|---|---|---|---|
+| Leaflet | https://leafletjs.com/reference.html | `leaflet` `^1.9` | Simple OSM maps (markers, GeoJSON, routes, boundaries) |
+| OpenStreetMap tiles | https://wiki.openstreetmap.org/wiki/Tile_servers | — | Base map tiles |
+| Chart.js | https://www.chartjs.org/docs/latest/ | `chart.js` `^4.5` | Bar/line/area/scatter/stacked charts |
+| Mermaid | https://mermaid.js.org/intro/ | `mermaid` `^11` | Flow/org/relationship/process diagrams |
+| MapLibre GL JS | https://maplibre.org/maplibre-gl-js/docs/ | `maplibre-gl` (follow-up) | Advanced vector/cinematic/scrollytelling maps |
+| D3 / Observable Plot | https://d3js.org/ · https://observablehq.com/plot/ | (follow-up) | Bespoke graphics |
+
+Libraries are lazy-loaded per type via dynamic `import()` and an
+`IntersectionObserver` (only when a viz nears the viewport), keeping the main
+bundle small. Each `:::map`/`:::chart`/`:::diagram` directive carries a base64
+config consumed by `resources/js/viz.js`.
+
 ## Adapter template
 
 Each third-party provider adapter (added in its stage) must document:

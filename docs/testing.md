@@ -126,6 +126,26 @@ vector; PHPStan level 5 covers the media layer.
 
 Automated: `tests/Unit/LiveBlogTest.php`; PHPStan level 5 covers the domain.
 
+## Manual QA — Stage 7 (Maps / charts / diagrams)
+
+In an article's Markdown, add viz directives and publish:
+- `:::chart` + a Chart.js config JSON (e.g. `{"type":"bar","data":{...},"caption":"…","source":"…"}`)
+- `:::map` + `{"center":[lat,lng],"zoom":10,"markers":[{"latlng":[lat,lng],"label":"…"}]}`
+- `:::diagram` + Mermaid source (e.g. `graph TD; A-->B`)
+
+- [ ] Chart renders (Chart.js); bar/line/etc. per config.
+- [ ] Checkpoint/multi-point map renders on OpenStreetMap tiles (Leaflet).
+- [ ] Diagram renders (Mermaid).
+- [ ] Caption + source note show (chart/map config `caption`/`source`).
+- [ ] Mobile: visualizations are responsive.
+- [ ] Keyboard: map pan/zoom reachable (Leaflet); page remains navigable.
+- [ ] Fallback: with JS disabled / on error, the figure shows its
+  `aria-label`/"Visualization unavailable" text rather than breaking.
+- [ ] Libraries load only when a viz scrolls into view (Network panel).
+
+Automated: `tests/Unit/MarkdownTest.php` covers viz block output; `npm run build`
+verifies the bundles + per-type code splitting.
+
 ## Per-stage checklists
 
 Each stage appends its manual QA checklist here as it lands (content model,

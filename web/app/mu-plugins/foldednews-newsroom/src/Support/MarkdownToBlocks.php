@@ -60,7 +60,14 @@ final class MarkdownToBlocks
                     $i++;
                 }
                 $i++; // closing :::
-                $blocks[] = self::directive(strtolower($m[1]), self::parse($inner));
+                $name = strtolower($m[1]);
+
+                if (in_array($name, ['map', 'chart', 'diagram'], true)) {
+                    // Carry the raw inner (JSON config or Mermaid) to the front end.
+                    $blocks[] = self::viz($name, implode("\n", $inner));
+                } else {
+                    $blocks[] = self::directive($name, self::parse($inner));
+                }
                 continue;
             }
 
@@ -182,6 +189,23 @@ final class MarkdownToBlocks
         }
 
         return "<!-- wp:list{$attr} -->\n<{$tag}>\n{$li}</{$tag}>\n<!-- /wp:list -->";
+    }
+
+    /**
+     * Interactive visualization (map / chart / diagram). The raw directive body
+     * (JSON config or Mermaid source) is base64-encoded into a data attribute
+     * and hydrated by resources/js/viz.js. Stored in a core HTML block so it
+     * round-trips through Gutenberg unchanged.
+     */
+    private static function viz(string $type, string $raw): string
+    {
+        $config = base64_encode(trim($raw));
+
+        return "<!-- wp:html -->\n"
+            .'<figure class="fn-viz fn-'.$type.'" data-fn-viz="'.$type.'" data-fn-config="'.$config.'">'
+            .'<div class="fn-viz-mount" role="img"></div>'
+            ."</figure>\n"
+            .'<!-- /wp:html -->';
     }
 
     private static function directive(string $name, string $innerBlocks): string
