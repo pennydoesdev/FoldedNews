@@ -61,6 +61,7 @@ function modules(): array
         Modules\Ai::class,
         Modules\Bookmarks::class,
         Modules\DesktopMode::class,
+        Modules\Health::class,
         Modules\Schema::class,
     ]);
 }

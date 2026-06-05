@@ -317,6 +317,28 @@ Automated: `tests/Unit/BookmarksTest.php` (pure toggle/merge); PHPStan level 5.
 - [ ] Confirm it collects no reader data and makes no network calls beyond the
   optional configured health endpoint.
 
+## Manual QA — Stage 18 (System health + QA)
+
+- [ ] **System Health** admin page shows environment, table presence, scheduled
+  jobs, S3 offload failures, and recent AI calls.
+- [ ] `GET /wp-json/foldednews/v1/health` returns `{ ok: true, … }`.
+- [ ] Playwright smoke specs (`tests/e2e/`) run against `BASE_URL` (homepage,
+  no local upload URLs, health endpoint); CI's `e2e` job is now active and skips
+  cleanly when no `BASE_URL` is set.
+
+### Testing matrix (foundations in place; expand per environment)
+
+| Area | Tool / mechanism |
+|---|---|
+| PHP unit | Pest (`tests/Unit`) — pure cores: Markdown, SigV4, meter, ad selector, AI cost, bookmarks, token, schema |
+| Static analysis | PHPStan level 5 + WordPress stubs (CI) |
+| E2E / a11y smoke | Playwright (`tests/e2e`) against `BASE_URL` |
+| Frontend build | Vite (`npm run build`) |
+| Secret / dependency scan | Gitleaks + `composer audit` / `npm audit` (CI) |
+| Webhook simulation | `stripe listen` / `stripe trigger` (Stage 10) |
+| S3 / AI / Stripe failure | bad creds → safe degradation (offload retry, AI fallback, campaign pause) |
+| Dashboards | System Health (logs), Ad metrics, AI usage log |
+
 ## Per-stage checklists
 
 Each stage appends its manual QA checklist here as it lands (content model,

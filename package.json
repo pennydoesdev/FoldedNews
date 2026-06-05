@@ -1,0 +1,11 @@
+{
+  "name": "foldednews-e2e",
+  "private": true,
+  "description": "End-to-end + accessibility smoke tests for FoldedNews (run against a live URL).",
+  "scripts": {
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0"
+  }
+}
