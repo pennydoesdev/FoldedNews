@@ -53,8 +53,17 @@ Editorial review states, corrections ledger, source notes. AI editorial output
 is never auto-published; legal/breaking claims require human approval
 (`AiSafetyService`, Stage 14).
 
-## Live coverage (Stage 6)
+## Live coverage (Stage 6 — implemented)
 
-Live blog update stream (newest/oldest, pinned key update, "what we know / do
-not know", reporter + editor approval, correction labels, `LiveBlogPosting`
-schema) and TimelineJS-style timelines.
+Live blogs (`fn_live_blog`) aggregate approved updates (`fn_live_update`) linked
+by `_fn_live_blog`. Each update carries reporter, editor `_fn_approved`,
+`_fn_pinned`, `_fn_correction` label, and `_fn_sources`. The single live-blog
+template (`LiveBlog` composer) renders "what we know / do not know", the pinned
+key update, and the newest/oldest-toggled stream; a public REST endpoint
+(`/wp-json/foldednews/v1/live/{id}/updates?since=`) + `resources/js/live-blog.js`
+poll for new updates (auto-refresh, stops when archived). `LiveBlogPosting`
+JSON-LD (with `liveBlogUpdate` entries) is emitted by the Schema module.
+
+Timelines (`fn_timeline_event`, `_fn_event_date`/`_fn_source`) render via the
+`timeline` component grouped by year, vertical (mobile-first) or horizontal,
+on the timeline archive (`TimelineArchive` composer).

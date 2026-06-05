@@ -51,6 +51,7 @@ function modules(): array
         Modules\Meta::class,
         Modules\Markdown::class,
         Modules\Media::class,
+        Modules\LiveBlog::class,
         Modules\Schema::class,
     ]);
 }

@@ -108,6 +108,24 @@ Set the `S3_*` + `CDN_URL` env vars (offload is inert until all are set).
 Automated: `tests/Unit/SignerTest.php` verifies SigV4 against AWS's published
 vector; PHPStan level 5 covers the media layer.
 
+## Manual QA — Stage 6 (Live blog + timeline)
+
+- [ ] Create a Live Blog; note its ID.
+- [ ] Add Live Updates with that Live Blog ID, mark **Approved**; they appear on
+  the live blog (unapproved ones do not).
+- [ ] Pin an update → it shows in the pinned slot with a "Pinned" badge.
+- [ ] Add a correction label to an update → the label renders.
+- [ ] Newest/Oldest toggle reorders the stream.
+- [ ] Auto-refresh: publish a new approved update; within ~20s it appears without
+  reload (`/wp-json/foldednews/v1/live/{id}/updates`).
+- [ ] Archive the Live Blog → "Archived" badge shows and polling stops.
+- [ ] `LiveBlogPosting` JSON-LD present on the live blog (validate at
+  https://validator.schema.org/).
+- [ ] Timeline archive groups events by year; Vertical/Horizontal toggle works;
+  mobile layout is single-column.
+
+Automated: `tests/Unit/LiveBlogTest.php`; PHPStan level 5 covers the domain.
+
 ## Per-stage checklists
 
 Each stage appends its manual QA checklist here as it lands (content model,

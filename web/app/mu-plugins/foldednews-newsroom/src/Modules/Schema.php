@@ -2,6 +2,7 @@
 
 namespace FoldedNews\Newsroom\Modules;
 
+use FoldedNews\Newsroom\Live\Updates;
 use FoldedNews\Newsroom\Module;
 use WP_Post;
 
@@ -18,6 +19,12 @@ final class Schema implements Module
 
     public function output(): void
     {
+        if (is_singular('fn_live_blog')) {
+            $this->liveBlog();
+
+            return;
+        }
+
         if (!is_singular('fn_article')) {
             return;
         }
@@ -56,6 +63,51 @@ final class Schema implements Module
         }
 
         echo "\n" . '<script type="application/ld+json">' . $json . '</script>' . "\n";
+    }
+
+    private function liveBlog(): void
+    {
+        $post = get_post();
+
+        if (! $post instanceof WP_Post) {
+            return;
+        }
+
+        $published = get_post_time('c', true, $post);
+        $modified = get_post_modified_time('c', true, $post);
+        $permalink = get_permalink($post);
+        $archived = (bool) get_post_meta($post->ID, '_fn_archived', true);
+
+        $updates = [];
+        foreach (Updates::forBlog($post->ID, 'ASC') as $update) {
+            $time = get_post_time('c', true, $update);
+            $updates[] = array_filter([
+                '@type' => 'BlogPosting',
+                'headline' => wp_strip_all_tags(get_the_title($update)) ?: 'Update',
+                'datePublished' => is_string($time) ? $time : null,
+                'articleBody' => wp_strip_all_tags((string) $update->post_content),
+            ], static fn ($v): bool => $v !== null && $v !== '');
+        }
+
+        $data = array_filter([
+            '@context' => 'https://schema.org',
+            '@type' => 'LiveBlogPosting',
+            'headline' => wp_strip_all_tags(get_the_title($post)),
+            'coverageStartTime' => is_string($published) ? $published : null,
+            'coverageEndTime' => ($archived && is_string($modified)) ? $modified : null,
+            'datePublished' => is_string($published) ? $published : null,
+            'dateModified' => is_string($modified) ? $modified : null,
+            'mainEntityOfPage' => is_string($permalink) ? $permalink : null,
+            'liveBlogUpdate' => $updates,
+        ], static fn ($value): bool => $value !== null && $value !== [] && $value !== '');
+
+        $json = wp_json_encode($data, JSON_UNESCAPED_UNICODE);
+
+        if ($json === false) {
+            return;
+        }
+
+        echo "\n".'<script type="application/ld+json">'.$json.'</script>'."\n";
     }
 
     /**

@@ -5,4 +5,6 @@
  * (live blog, maps, charts) are code-split and loaded in their own stages.
  */
 
+import './live-blog.js'
+
 import.meta.glob('./**/*.js')
