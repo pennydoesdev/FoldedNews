@@ -268,6 +268,25 @@ covers the module.
 Automated: `tests/Unit/AdSelectorTest.php` (weighted selection); PHPStan level 5
 covers the ads module + events table.
 
+## Manual QA — Stage 14 (AI Copilot)
+
+Set one or more provider env keys (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, …).
+
+- [ ] AI Copilot settings: each configured provider shows "configured"; set a
+  default + fallback and per-feature provider/model.
+- [ ] Run **SEO** on an article with one provider, **summary** with another →
+  both return suggestions in the meta box.
+- [ ] Output is shown for review only — nothing is published automatically;
+  sensitive features show "[Requires editor approval before use]".
+- [ ] Fallback: make the primary provider's key invalid → the fallback provider
+  serves the request.
+- [ ] Usage log records every call (feature/provider/model/tokens/cost/status).
+- [ ] No secrets exposed: the settings page never shows API keys; keys are not in
+  options or logs.
+
+Automated: `tests/Unit/AiCostTest.php` (pure cost math); PHPStan level 5 covers
+the AI layer.
+
 ## Per-stage checklists
 
 Each stage appends its manual QA checklist here as it lands (content model,

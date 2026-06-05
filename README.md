@@ -6,9 +6,9 @@ with **Acorn** (Laravel-style providers/services), **Blade**, **Tailwind CSS 4**
 and **Vite**. This is the structure **Radicle** composes (Bedrock + Sage +
 Acorn); see `docs/vendor-references.md`.
 
-> Build status: **Stage 13 — advertiser portal + ad platform**. The platform is
-> built in 20 staged increments (see the project plan). Each stage must build,
-> test, and pass manual QA before the next begins.
+> Build status: **Stage 14 — universal AI copilot (provider-routable)**. The
+> platform is built in 20 staged increments (see the project plan). Each stage
+> must build, test, and pass manual QA before the next begins.
 
 ## Stack
 

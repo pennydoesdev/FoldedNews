@@ -1,6 +1,24 @@
 # AI Providers
 
-> Status: skeleton. Populated in **Stage 14 (Universal AI Copilot)**.
+> Status: **Stage 14 implemented.** Provider-routable per feature, with fallback,
+> usage logging, cost estimation, and an editorial safety policy (AI never
+> auto-publishes; sensitive features are flagged for human approval).
+
+## Implementation
+
+- Classes (`src/Ai/`): `AiRouter`, `AiProviderInterface`, `OpenCompatibleProvider`
+  + `OpenAiProvider`/`MiniMaxProvider`/`FeatherlessProvider`, `AnthropicProvider`,
+  `GeminiProvider`, `PuterProvider`, `AiUsageLogger`, `AiCostEstimator`,
+  `AiPromptRegistry`, `AiSafetyService`.
+- Admin: **AI Copilot** settings (default + fallback provider, per-feature
+  provider/model) and a **Usage log**. Keys are read from env and never shown or
+  stored in options; the page only shows each provider's configured/not-set status.
+- Editor: an **AI Copilot** meta box (summary, headline, seo, tagging, editorial
+  notes, alt text) calls `POST /wp-json/foldednews/v1/ai/run` and shows
+  suggestions — never applied or published automatically.
+- Fallback: if the feature's primary provider is unavailable or errors, the
+  configured fallback provider is tried; every call is logged (`fn_ai_log`).
+
 
 Provider-routable AI: admins pick provider/model per feature (SEO, summaries,
 headlines, newsletters, liveblog cleanup, moderation, tagging, ad intelligence,
