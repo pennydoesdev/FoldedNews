@@ -88,6 +88,26 @@ and a People entry set as an article's `_fn_byline`).
 Automated: `tests/Unit/MarkdownTest.php` (Pest) covers the pure-PHP converter;
 PHPStan level 5 covers the module.
 
+## Manual QA — Stage 5 (S3 media offload)
+
+Set the `S3_*` + `CDN_URL` env vars (offload is inert until all are set).
+
+- [ ] Upload an image — original + generated sizes appear in the bucket
+  (`S3_PATH_PREFIX/…`).
+- [ ] Upload a video and a podcast audio file — both offload.
+- [ ] Front end / REST / RSS show **CDN URLs**, no public
+  `web/app/uploads/` (or `wp-content/uploads/`) URLs (`scripts/health-check.sh`).
+- [ ] `srcset` URLs are CDN-rewritten.
+- [ ] Image still looks lossless (no recompression by the offloader).
+- [ ] With `S3_DELETE_LOCAL=true`, local files are removed only after the remote
+  HEAD verify succeeds.
+- [ ] Rollback: point S3 at bad credentials → upload still succeeds locally, the
+  URL stays local, the failure is logged (`fn_s3_failures`) and a retry is
+  scheduled (`fn_s3_retry`).
+
+Automated: `tests/Unit/SignerTest.php` verifies SigV4 against AWS's published
+vector; PHPStan level 5 covers the media layer.
+
 ## Per-stage checklists
 
 Each stage appends its manual QA checklist here as it lands (content model,

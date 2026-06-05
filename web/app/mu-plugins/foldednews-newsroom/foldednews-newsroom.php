@@ -50,6 +50,7 @@ function modules(): array
         Modules\Taxonomies::class,
         Modules\Meta::class,
         Modules\Markdown::class,
+        Modules\Media::class,
         Modules\Schema::class,
     ]);
 }

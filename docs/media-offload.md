@@ -1,6 +1,8 @@
 # Media Offload
 
-> Status: skeleton. Populated in **Stage 5 (Universal S3-compatible offload)**.
+> Status: **Stage 5 implemented (foundation).** Offload is inert until S3 + CDN
+> are configured. WebP/AVIF + lossless optimization and multipart (very large
+> video) upload are noted follow-ups.
 
 ## Principle
 
@@ -13,7 +15,10 @@ canonical; the configured CDN/media URL is the public source. No public
 - **Official docs:** AWS S3 API https://docs.aws.amazon.com/AmazonS3/latest/API/ ·
   S3-compatible providers (Cloudflare R2, Backblaze B2, MinIO, DigitalOcean
   Spaces, Wasabi) expose the same API.
-- **SDK / package:** `aws/aws-sdk-php` (S3 client) — https://docs.aws.amazon.com/sdk-for-php/
+- **Client:** built-in pure-PHP **SigV4** signer + S3 client over the WordPress
+  HTTP API (no SDK dependency; works with any S3-compatible provider). Verified
+  against AWS's published SigV4 "get-vanilla" vector. `aws/aws-sdk-php`
+  (https://docs.aws.amazon.com/sdk-for-php/) remains a documented drop-in option.
 - **Auth:** access key + secret (signature v4)
 - **Required env vars:** `S3_ENDPOINT`, `S3_REGION`, `S3_BUCKET`, `S3_KEY`,
   `S3_SECRET`, `S3_PATH_PREFIX`, `CDN_URL`, `S3_FORCE_HTTPS`,
