@@ -54,6 +54,25 @@ Requires a live WordPress + MySQL install (mu-plugin active automatically).
 - [ ] Permalinks resolve (e.g. `/articles/`, `/videos/`, `/people/`) — flush
   Permalinks once if needed.
 
+## Manual QA — Stage 3 (Sage news theme)
+
+Requires a live install with a few published Articles (some tagged with topic
+slugs `politics`/`business`/etc., one tagged Article Format "Breaking News",
+and a People entry set as an article's `_fn_byline`).
+
+- [ ] Homepage renders: breaking banner, hero, lead package, latest rail, live
+  updates rail, topic/section rails, newsletter signup.
+- [ ] **No duplicate posts** across the homepage (dedup is enforced server-side
+  by `App\Support\Feed` via `post__not_in`).
+- [ ] Empty sections are omitted (untagged topics don't render empty rails).
+- [ ] Single article shows the author card under the headline, the date line
+  (Published / Updated), source notes and corrections when present.
+- [ ] Mobile layout works (single column → grid at `sm`/`lg`).
+- [ ] Keyboard navigation: skip link, nav, and one link per card (image links
+  are `aria-hidden`/`tabindex=-1` to avoid duplicates).
+- [ ] Zilla Slab renders on headings/brand.
+- [ ] Lighthouse/CWV baseline acceptable (full optimisation is Stage 19).
+
 ## Per-stage checklists
 
 Each stage appends its manual QA checklist here as it lands (content model,
