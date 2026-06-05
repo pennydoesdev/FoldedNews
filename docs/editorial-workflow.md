@@ -3,11 +3,21 @@
 > Status: skeleton. Populated across **Stage 2 (content model)**,
 > **Stage 4 (Markdown editor)**, and **Stage 6 (live blog/timeline)**.
 
-## Content model (Stage 2)
+## Content model (Stage 2 — implemented)
 
-Content types: Articles, Live Blogs, Live Updates, Timeline Events, People,
-Organizations, Places, Topics, Videos, Podcasts, Newsletters, Campaigns,
-Contacts, Corrections, Source Notes, Editorial Reviews.
+Registered by the `foldednews-newsroom` mu-plugin (modules: `ContentTypes`,
+`Taxonomies`, `Meta`, `Schema`).
+
+Post types (`fn_` prefixed): Articles, Live Blogs, Live Updates, Timeline
+Events, People, Organizations, Places, Videos, Podcasts, Newsletters,
+Campaigns, Contacts, Corrections, Source Notes, Editorial Reviews. **Topics**
+are modelled as a taxonomy (`topic`) because articles *relate to* topics;
+article templates are the `article_format` taxonomy (seeded with the 10 below).
+
+Article meta: `_fn_dek` (standfirst), `_fn_byline` (People IDs), `_fn_source_notes`,
+`_fn_corrections`. People meta: `_fn_role`, `_fn_social`. All REST-exposed.
+Published/updated dates use native `post_date`/`post_modified`. A `NewsArticle`
+JSON-LD block (`datePublished`/`dateModified`) is emitted on single articles.
 
 Article templates: Standard News, Breaking News, Investigation, Analysis,
 Explainer, Feature, Live Article, Timeline Article, Video Article, Podcast

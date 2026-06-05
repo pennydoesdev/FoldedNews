@@ -33,6 +33,27 @@ Run after `composer install` (root + theme), `npm run build`, and a configured
 > which is provisioned during install (see `README.md`) — they cannot run in a
 > static CI-only context.
 
+## Manual QA — Stage 2 (Content model)
+
+Requires a live WordPress + MySQL install (mu-plugin active automatically).
+
+- [ ] All 15 content types appear in wp-admin: Articles, Live Blogs, Live
+  Updates, Timeline Events, People, Organizations, Places, Videos, Podcasts,
+  Newsletters, Campaigns, Contacts, Corrections, Source Notes, Editorial Reviews.
+- [ ] Topics + Article Formats taxonomies exist; the 10 formats are seeded
+  (Standard News … Podcast Article).
+- [ ] Create and publish a test Article with a dek, featured image, topic, and a
+  People byline.
+- [ ] Author-card data is available: People entry has role + social; article
+  carries `_fn_byline`. (Card rendering lands in Stage 3.)
+- [ ] Published + Updated dates: edit the article and confirm `post_modified`
+  advances.
+- [ ] View source on the single article: a `NewsArticle` JSON-LD block is
+  present with `datePublished`, `dateModified`, `headline`, `author`,
+  `publisher` (validate at https://validator.schema.org/).
+- [ ] Permalinks resolve (e.g. `/articles/`, `/videos/`, `/people/`) — flush
+  Permalinks once if needed.
+
 ## Per-stage checklists
 
 Each stage appends its manual QA checklist here as it lands (content model,

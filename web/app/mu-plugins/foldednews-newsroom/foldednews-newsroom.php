@@ -2,13 +2,12 @@
 
 /**
  * Plugin Name:  FoldedNews Newsroom
- * Description:  Modular newsroom domain (content types, taxonomies, services). Bootstraps via Acorn.
- * Version:      0.1.0
+ * Description:  Modular newsroom domain (content types, taxonomies, services).
+ * Version:      0.2.0
  * Author:       FoldedNews
  * License:      Proprietary
  *
- * Stage 1: bootstrap only. Content types/taxonomies land in Stage 2.
- * Business logic lives in PHP service classes (src/), never in Blade.
+ * Business logic lives in PHP modules under src/, never in Blade.
  */
 
 namespace FoldedNews\Newsroom;
@@ -17,28 +16,46 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('FOLDEDNEWS_NEWSROOM_VERSION', '0.1.0');
+define('FOLDEDNEWS_NEWSROOM_VERSION', '0.2.0');
 define('FOLDEDNEWS_NEWSROOM_DIR', __DIR__);
 
 /**
- * Modules register themselves here as the platform grows (Stage 2+).
- * Each module is a small, self-contained class with a register() method.
+ * Minimal PSR-4 autoloader for FoldedNews\Newsroom\ => src/.
+ */
+spl_autoload_register(function (string $class): void {
+    $prefix = __NAMESPACE__ . '\\';
+
+    if (!str_starts_with($class, $prefix)) {
+        return;
+    }
+
+    $relative = substr($class, strlen($prefix));
+    $path = __DIR__ . '/src/' . str_replace('\\', '/', $relative) . '.php';
+
+    if (is_file($path)) {
+        require $path;
+    }
+});
+
+/**
+ * Default modules. Add/remove via the filter without editing core.
  *
- * @return array<class-string>
+ * @return array<class-string<Module>>
  */
 function modules(): array
 {
-    /**
-     * Allow modules to be added/removed without editing core.
-     *
-     * @param array<class-string> $modules
-     */
-    return (array) apply_filters('foldednews/newsroom/modules', []);
+    /** @param array<class-string<Module>> $modules */
+    return (array) apply_filters('foldednews/newsroom/modules', [
+        Modules\ContentTypes::class,
+        Modules\Taxonomies::class,
+        Modules\Meta::class,
+        Modules\Schema::class,
+    ]);
 }
 
 add_action('plugins_loaded', function (): void {
     foreach (modules() as $module) {
-        if (class_exists($module) && method_exists($module, 'register')) {
+        if (is_subclass_of($module, Module::class)) {
             (new $module())->register();
         }
     }
